@@ -295,6 +295,10 @@ void ContentWidget::scrollTopRestore(int scrollTop) {
 void ContentWidget::scrollTo(const Ui::ScrollToRequest &request) {
 	_scroll->scrollTo(request);
 }
+// AyuGram smooth scroll
+void ContentWidget::stopSmoothScroll() {
+	_scroll->stopSmoothScroll();
+}
 
 bool ContentWidget::floatPlayerHandleWheelEvent(QEvent *e) {
 	return _scroll->viewportEvent(e);

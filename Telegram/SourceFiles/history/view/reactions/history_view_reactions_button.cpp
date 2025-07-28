@@ -26,6 +26,10 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "styles/style_chat_helpers.h"
 #include "styles/style_menu_icons.h"
 
+
+// AyuGram includes
+#include "ayu/smooth_scroll/smooth_scroll.h"
+
 namespace HistoryView::Reactions {
 namespace {
 
@@ -124,6 +128,35 @@ bool Button::consumeWheelEvent(not_null<QWheelEvent*> e) {
 	if (horizontal) {
 		return false;
 	}
+
+	// AyuGram smooth scroll
+	const auto scrollDelta = Ui::ScrollDelta(e) * (expandUp() ? -1. : 1.);
+	if (SmoothScroll::Scroller::handleScroll(
+		-scrollDelta.y(),
+		_scrollAnimation,
+		_scrollTarget,
+		{
+			.getScroll = [this]
+			{
+				return int(base::SafeRound(_scroll));
+			},
+			.setScroll = [this](int value)
+			{
+				_scroll = value;
+				_update(_geometry);
+			},
+			.getNewTarget = [=](int target)
+			{
+				return std::clamp(target, 0, scrollMax);
+			}
+		},
+		anim::easeOutCubic,
+		kCollapseDuration)) {
+		e->accept();
+		return true;
+	}
+	// AyuGram smooth scroll
+
 	const auto between = st::reactionCornerSkip;
 	const auto oneHeight = (st::reactionCornerSize.height() + between);
 	const auto max = oneHeight * kMaxReactionsScrollAtOnce;
@@ -209,6 +242,14 @@ void Button::updateGeometry(Fn<void(QRect)> update) {
 	)) - _collapsed.height();
 	if (!added && _state != State::Inside) {
 		_scroll = 0;
+
+		// AyuGram smooth scroll
+		if (_scrollAnimation.animating()) {
+			_scrollAnimation.stop();
+		}
+		_scrollTarget = -1.;
+		// AyuGram smooth scroll
+
 	}
 	const auto geometry = _collapsed.marginsAdded({
 		0,

@@ -18,6 +18,7 @@
 #include <fstream>
 
 #include "ayu_worker.h"
+#include "ayu/ayu_ui_settings.h"
 #include "window/window_controller.h"
 
 using json = nlohmann::json;
@@ -229,6 +230,7 @@ AyuGramSettings::AyuGramSettings() {
 	increaseWebviewHeight = false;
 	increaseWebviewWidth = false;
 
+	smoothScroll = true;
 	disableNotificationsDelay = false;
 	localPremium = false;
 	showChannelReactions = true;
@@ -409,6 +411,10 @@ void set_increaseWebviewHeight(bool val) {
 
 void set_increaseWebviewWidth(bool val) {
 	settings->increaseWebviewWidth = val;
+}
+void set_smoothScroll(bool val) {
+	settings->smoothScroll = val;
+	AyuUiSettings::setSmoothScroll(val);
 }
 
 void set_disableNotificationsDelay(bool val) {

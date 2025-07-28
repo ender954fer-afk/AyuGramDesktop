@@ -2912,6 +2912,11 @@ bool ChatWidget::listScrollTo(int top, bool syntetic) {
 	const auto scrolled = (_scroll->scrollTop() != top);
 	_synteticScrollEvent = syntetic;
 	if (scrolled) {
+
+		// AyuGram smooth scroll
+		_scroll->stopSmoothScroll();
+		// AyuGram smooth scroll
+
 		_scroll->scrollToY(top);
 	} else if (syntetic) {
 		updateInnerVisibleArea();

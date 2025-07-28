@@ -114,6 +114,10 @@ private:
 	base::Timer _debounceTimer;
 	bool _inited = false;
 
+
+	// AyuGram smooth scroll
+	Animations::Simple _groupsScrollAnimation;
+	float64 _groupsScrollTo = -1.;
 };
 
 class TabbedSearch final {

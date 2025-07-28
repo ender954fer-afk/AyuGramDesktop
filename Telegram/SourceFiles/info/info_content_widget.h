@@ -169,6 +169,8 @@ protected:
 
 	void setViewport(rpl::producer<not_null<QEvent*>> &&events) const;
 
+	// AyuGram smooth scroll
+	void stopSmoothScroll();
 private:
 	RpWidget *doSetInnerWidget(object_ptr<RpWidget> inner);
 	void updateControlsGeometry();

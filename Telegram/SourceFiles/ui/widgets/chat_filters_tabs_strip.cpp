@@ -53,6 +53,11 @@ struct State final {
 
 	std::unique_ptr<Ui::ChatsFiltersTabsReorder> reorder;
 	bool ignoreRefresh = false;
+
+	// AyuGram smooth scroll
+	Animations::Simple scrollAnimation;
+	float64 scrollTo = -1.;
+
 };
 
 void ShowMenu(
@@ -303,6 +308,28 @@ not_null<Ui::RpWidget*> AddChatFiltersTabsStrip(
 		if (std::abs(pixelDelta.x()) + std::abs(angleDelta.x())) {
 			return false;
 		}
+		// AyuGram smooth scroll
+		const auto delta = ScrollDelta(e);
+
+		if (SmoothScroll::Scroller::handleScroll(
+			-delta.y(),
+			state->scrollAnimation,
+			state->scrollTo,
+			{
+				.getScroll = [=] { return scroll->horizontalScrollBar()->value(); },
+				.setScroll = [=](int v) { scroll->horizontalScrollBar()->setValue(v); },
+				.getNewTarget = [bar = scroll->horizontalScrollBar()](int t)
+				{
+					return std::clamp(t, bar->minimum(), bar->maximum());
+				}
+			})
+		) {
+			return true;
+		}
+		// AyuGram smooth scroll
+
+
+
 		const auto bar = scroll->horizontalScrollBar();
 		const auto y = pixelDelta.y() ? pixelDelta.y() : angleDelta.y();
 		bar->setValue(bar->value() - y);

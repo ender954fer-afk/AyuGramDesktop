@@ -74,6 +74,7 @@ public:
 	bool increaseWebviewHeight;
 	bool increaseWebviewWidth;
 
+	bool smoothScroll;
 	bool disableNotificationsDelay;
 	bool localPremium;
 	bool showChannelReactions;
@@ -158,6 +159,7 @@ void set_spoofWebviewAsAndroid(bool val);
 void set_increaseWebviewHeight(bool val);
 void set_increaseWebviewWidth(bool val);
 
+void set_smoothScroll(bool val);
 void set_disableNotificationsDelay(bool val);
 void set_localPremium(bool val);
 void set_hideChannelReactions(bool val);
@@ -232,6 +234,7 @@ inline void to_json(nlohmann::json &nlohmann_json_j, const AyuGramSettings &nloh
 	NLOHMANN_JSON_TO(spoofWebviewAsAndroid)
 	NLOHMANN_JSON_TO(increaseWebviewHeight)
 	NLOHMANN_JSON_TO(increaseWebviewWidth)
+	NLOHMANN_JSON_TO(smoothScroll)
 	NLOHMANN_JSON_TO(disableNotificationsDelay)
 	NLOHMANN_JSON_TO(localPremium)
 	NLOHMANN_JSON_TO(appIcon)
@@ -297,6 +300,7 @@ inline void from_json(const nlohmann::json &nlohmann_json_j, AyuGramSettings &nl
 	NLOHMANN_JSON_FROM_WITH_DEFAULT(spoofWebviewAsAndroid)
 	NLOHMANN_JSON_FROM_WITH_DEFAULT(increaseWebviewHeight)
 	NLOHMANN_JSON_FROM_WITH_DEFAULT(increaseWebviewWidth)
+	NLOHMANN_JSON_FROM_WITH_DEFAULT(smoothScroll)
 	NLOHMANN_JSON_FROM_WITH_DEFAULT(disableNotificationsDelay)
 	NLOHMANN_JSON_FROM_WITH_DEFAULT(localPremium)
 	NLOHMANN_JSON_FROM_WITH_DEFAULT(appIcon)

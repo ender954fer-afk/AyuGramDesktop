@@ -199,6 +199,11 @@ private:
 		anim::value selectionWidth;
 		crl::time animationStart = 0;
 		Ui::Animations::Basic animation;
+
+
+		// AyuGram smooth scroll
+		Ui::Animations::Simple scrollAnimation;
+		float64 scrollTo = -1.;
 	};
 	struct ExpandingContext {
 		QRect clip;

@@ -19,6 +19,9 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 
 #include <QtWidgets/QApplication>
 
+// AyuGram includes
+#include "ayu/smooth_scroll/smooth_scroll.h"
+
 namespace Ui {
 namespace {
 
@@ -45,6 +48,11 @@ public:
 
 	[[nodiscard]] rpl::producer<int> moveRequests() const;
 
+
+	// AyuGram smooth scroll
+	bool isDragging() const {
+		return _dragging;
+	}
 private:
 	struct Button {
 		EmojiGroup group;
@@ -375,6 +383,38 @@ void SearchWithGroups::initGroups() {
 
 	widget->moveRequests(
 	) | rpl::start_with_next([=](int delta) {
+
+		// AyuGram smooth scroll
+
+		if (widget->isDragging()) {
+			SmoothScroll::Scroller::stop(
+				_groupsScrollAnimation,
+				_groupsScrollTo);
+			moveGroupsBy(width(), delta);
+			return;
+		}
+		if (SmoothScroll::Scroller::handleScroll(
+			delta,
+			_groupsScrollAnimation,
+			_groupsScrollTo,
+			{
+				.getScroll = [=] {
+					return _groups->x();
+				},
+				.setScroll = [=](int value) {
+					moveGroupsTo(width(), value);
+				},
+				.getNewTarget = [=](int target) {
+					return clampGroupsLeft(width(), target);
+				}
+			},
+			anim::easeOutCubic,
+			st::slideWrapDuration
+		)) {
+			return;
+		}
+		// AyuGram smooth scroll
+
 		moveGroupsBy(width(), delta);
 	}, lifetime());
 

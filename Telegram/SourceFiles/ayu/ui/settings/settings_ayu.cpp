@@ -789,6 +789,27 @@ void SetupQoLToggles(not_null<Ui::VerticalLayout*> container) {
 	AddDivider(container);
 	AddSkip(container);
 
+
+	AddButtonWithIcon(
+		container,
+		tr::ayu_SmoothScroll(),
+		st::settingsButtonNoIcon
+	)->toggleOn(
+		rpl::single(settings->smoothScroll)
+	)->toggledValue(
+	) | rpl::filter(
+		[=](bool enabled)
+		{
+			return (enabled != settings->smoothScroll);
+		}) | start_with_next(
+		[=](bool enabled)
+		{
+			AyuSettings::set_smoothScroll(enabled);
+			AyuSettings::save();
+		},
+		container->lifetime());
+
+
 	AddButtonWithIcon(
 		container,
 		tr::ayu_DisableNotificationsDelay(),

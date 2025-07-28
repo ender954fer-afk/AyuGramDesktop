@@ -131,6 +131,11 @@ private:
 	base::Timer _hideTimer;
 	std::optional<QPoint> _lastGlobalPosition;
 
+
+	// AyuGram smooth scroll
+
+	Ui::Animations::Simple _scrollAnimation;
+	float64 _scrollTarget = -1.;
 };
 
 class Manager final : public base::has_weak_ptr {

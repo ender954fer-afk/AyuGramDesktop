@@ -136,6 +136,10 @@ Widget::Widget(QWidget *parent, not_null<Controller*> controller)
 	_inner->setScrollHeightValue(scrollHeightValue());
 	_inner->scrollToRequests(
 	) | rpl::start_with_next([this](Ui::ScrollToRequest request) {
+		// AyuGram smooth scroll
+		stopSmoothScroll();
+		// AyuGram smooth scroll
+
 		scrollTo(request);
 	}, _inner->lifetime());
 }

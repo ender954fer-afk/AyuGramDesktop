@@ -7142,6 +7142,18 @@ void HistoryWidget::updateHistoryGeometry(
 	updateListSize();
 	_updateHistoryGeometryRequired = false;
 
+	// AyuGram smooth scroll
+
+	// workaround:
+	// stop smooth scroll to prevent the view from
+	// jumping to the top when older messages are loaded
+
+	// scroll position isn't correctly calculated on resize
+	_scroll->stopSmoothScroll();
+
+	// AyuGram smooth scroll
+
+
 	auto newScrollTop = 0;
 	if (initial) {
 		newScrollTop = countInitialScrollTop();

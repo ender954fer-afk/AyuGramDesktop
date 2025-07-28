@@ -63,6 +63,11 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "styles/style_menu_icons.h"
 #include "styles/style_window.h"
 
+
+// AyuGram includes
+#include <QScrollBar>
+
+
 namespace Dialogs {
 namespace {
 
@@ -1349,6 +1354,31 @@ void Suggestions::setupTabs() {
 		if (std::abs(pixelDelta.x()) + std::abs(angleDelta.x())) {
 			return false;
 		}
+		// AyuGram smooth scroll
+		const auto delta = Ui::ScrollDelta(e);
+		const auto bar = _tabsScroll->horizontalScrollBar();
+		if (SmoothScroll::Scroller::handleScroll(
+			-delta.y(),
+			_tabsWheelAnimation,
+			_tabsWheelScrollTo,
+			{
+				.getScroll = [bar]
+				{
+					return bar->value();
+				},
+				.setScroll = [bar](int v)
+				{
+					bar->setValue(v);
+				},
+				.getNewTarget = [bar](int t)
+				{
+					return std::clamp(t, bar->minimum(), bar->maximum());
+				}
+			})) {
+			return true;
+		}
+		// AyuGram smooth scroll
+
 		const auto y = pixelDelta.y() ? pixelDelta.y() : angleDelta.y();
 		_tabsScroll->scrollToX(_tabsScroll->scrollLeft() - y);
 		return true;

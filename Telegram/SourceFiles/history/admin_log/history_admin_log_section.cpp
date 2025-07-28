@@ -326,6 +326,11 @@ Widget::Widget(
 	}, lifetime());
 	_inner->scrollToSignal(
 	) | rpl::start_with_next([=](int top) {
+
+		// AyuGram smooth scroll
+		_scroll->stopSmoothScroll();
+		// AyuGram smooth scroll
+
 		_scroll->scrollToY(top);
 	}, lifetime());
 

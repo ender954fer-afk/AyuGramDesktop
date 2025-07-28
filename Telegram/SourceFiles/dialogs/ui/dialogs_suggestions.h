@@ -112,6 +112,10 @@ public:
 
 	class ObjectListController;
 
+
+	// AyuGram smooth scroll
+	Ui::Animations::Simple _tabsWheelAnimation;
+	float64 _tabsWheelScrollTo = -1.;
 private:
 	using MediaType = Storage::SharedMediaType;
 	enum class Tab : uchar {

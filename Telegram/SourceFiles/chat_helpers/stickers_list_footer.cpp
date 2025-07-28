@@ -33,6 +33,11 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 
 #include <QtWidgets/QApplication>
 
+// AyuGram includes
+#include "ayu/smooth_scroll/smooth_scroll.h"
+#include "ui/ui_utility.h"
+
+
 namespace ChatHelpers {
 namespace {
 
@@ -948,6 +953,36 @@ void StickersListFooter::scrollByWheelEvent(
 			? e->pixelDelta().y()
 			: e->angleDelta().y());
 	const auto use = [&](ScrollState &state) {
+
+		// AyuGram smooth scroll
+		if (state.dragging) {
+			SmoothScroll::Scroller::stop(state.scrollAnimation, state.scrollTo);
+			return;
+		}
+		const auto scrollDelta = Ui::ScrollDelta(e);
+		const auto scroll = (std::abs(scrollDelta.y()) >= std::abs(scrollDelta.x()))
+								? scrollDelta.y()
+								: scrollDelta.x();
+
+		if (SmoothScroll::Scroller::handleScroll(
+			-scroll,
+			state.scrollAnimation,
+			state.scrollTo,
+			{
+				.getScroll = [&]{return qRound(state.x.current());},
+				.setScroll = [&](int v){
+					state.x = anim::value(v);
+					update();
+				},
+				.getNewTarget = [&](int t){return std::clamp(t, 0, state.max);}
+			},
+			anim::easeOutCubic,
+			st::slideWrapDuration
+		)) {
+			return;
+		}
+		// AyuGram smooth scroll
+
 		const auto now = qRound(state.x.current());
 		const auto used = now - delta;
 		const auto next = std::clamp(used, 0, state.max);

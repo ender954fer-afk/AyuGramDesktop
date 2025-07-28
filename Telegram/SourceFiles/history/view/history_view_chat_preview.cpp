@@ -571,6 +571,7 @@ bool Item::listScrollTo(int top, bool syntetic) {
 		updateInnerVisibleArea();
 		return false;
 	}
+	_scroll->stopSmoothScroll();
 	_scroll->scrollToY(top);
 	return true;
 }

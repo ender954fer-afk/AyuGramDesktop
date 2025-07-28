@@ -32,6 +32,7 @@ void initUiSettings() {
 
 	AyuUiSettings::setMonoFont(settings.monoFont);
 	AyuUiSettings::setWideMultiplier(settings.wideMultiplier);
+	AyuUiSettings::setSmoothScroll(settings.smoothScroll);
 }
 
 void initDatabase() {
