@@ -426,6 +426,9 @@ void UnreadBar::paint(
 		int y,
 		int w,
 		ElementChatMode mode) const {
+	// AyuGram changed:
+	// draw pills instead of full-width bar
+
 	if (AyuFeatures::MessageShot::isTakingShot()) {
 		return;
 	}
@@ -434,22 +437,23 @@ void UnreadBar::paint(
 		p.translate(-previousTranslation, 0);
 	}
 	const auto st = context.st;
-	const auto bottom = y + height();
-	y += marginTop();
-	p.fillRect(
-		0,
-		y,
-		w,
-		height() - marginTop() - st::lineWidth,
-		st->historyUnreadBarBg());
-	p.fillRect(
-		0,
-		bottom - st::lineWidth,
-		w,
-		st::lineWidth,
-		st->historyUnreadBarBorder());
+	// const auto bottom = y + height();
+	// y += marginTop();
+	// p.fillRect(
+	// 	0,
+	// 	y,
+	// 	w,
+	// 	height() - marginTop() - st::lineWidth,
+	// 	st->historyUnreadBarBg());
+	// p.fillRect(
+	// 	0,
+	// 	bottom - st::lineWidth,
+	// 	w,
+	// 	st::lineWidth,
+	// 	st->historyUnreadBarBorder());
 	p.setFont(st::historyUnreadBarFont);
 	p.setPen(st->historyUnreadBarFg());
+	p.setRenderHint(QPainter::Antialiasing);
 
 	int maxwidth = w;
 	if (mode == ElementChatMode::Wide) {
@@ -461,13 +465,29 @@ void UnreadBar::paint(
 	}
 	w = maxwidth;
 
-	const auto skip = st::historyUnreadBarHeight
-		- 2 * st::lineWidth
-		- st::historyUnreadBarFont->height;
-	p.drawText(
-		(w - width) / 2,
-		y + (skip / 2) + st::historyUnreadBarFont->ascent,
-		text);
+	constexpr auto padding = 20;
+
+	// `width` - width of the text
+	const auto pillWidth = width + 2 * padding;
+	const auto pillHeight = height() - marginTop();
+	const auto pillX = (w - pillWidth) / 2;
+	const auto pillY = y + marginTop();
+
+	QPainterPath path;
+	path.addRoundedRect(pillX,
+						pillY,
+						pillWidth,
+						pillHeight,
+						static_cast<double>(pillHeight) / 2,
+						static_cast<double>(pillHeight) / 2);
+	p.fillPath(path, st->historyUnreadBarBg());
+
+	const auto textY = pillY
+		+ (pillHeight - st::historyUnreadBarFont->height) / 2
+		+ st::historyUnreadBarFont->ascent;
+
+	p.drawText((w - width) / 2, textY, text);
+
 	if (previousTranslation != 0) {
 		p.translate(previousTranslation, 0);
 	}
