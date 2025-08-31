@@ -76,9 +76,11 @@ echo "✓ $UpdateFileARM64 - Update package for arm64"
 echo
 
 echo "=== Release Information ==="
+echo "Version: $AppVersionStr (Build $AppVersion)"
 echo "DMG size: ~200-300 MB (estimated)"
 echo "Compatible with: macOS 10.13+ on Apple Silicon (M1/M2/M3)"
 echo "Features included: All AyuGram enhancements and latest Telegram features"
+echo "Includes: Latest updates from dev-bleizx branch integration"
 echo
 
 echo "=== Upload Locations ==="

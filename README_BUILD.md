@@ -1,8 +1,8 @@
-# AyuGram Desktop - Branch Merge and macOS arm64 Build Setup
+# AyuGram Desktop - Version 5.16.5 Build Setup and DMG Creation
 
 ## Summary
 
-This repository contains the successfully merged AyuGram Desktop source code with build configuration for creating macOS arm64 DMG packages.
+This repository contains AyuGram Desktop version 5.16.5 source code with complete build configuration for creating macOS arm64 DMG packages. Version 5.16.5 includes all updates from the dev-bleizx branch integration and the latest improvements from version 5.16.4.
 
 ## Branch Merge Completed
 
@@ -19,10 +19,10 @@ This repository contains the successfully merged AyuGram Desktop source code wit
 
 ✅ **Build system configured for macOS arm64**
 - Target file set to `mac`
-- Version: 5.16.4 (Build 5016004)
+- Version: 5.16.5 (Build 5016005)
 - Output files configured:
-  - DMG: `tsetup.arm64.5.16.4.dmg` 
-  - Update package: `tarmacupd5016004`
+  - DMG: `tsetup.arm64.5.16.5.dmg` 
+  - Update package: `tarmacupd5016005`
   - App bundle: `Telegram.arm64.app`
 
 ## Build Process
@@ -49,8 +49,8 @@ cd ../Telegram/build && ./build.sh arm64
 ```
 
 ### Generated Files
-- **tsetup.arm64.5.16.4.dmg** - Main installer for macOS arm64
-- **tarmacupd5016004** - Update package for automatic updates
+- **tsetup.arm64.5.16.5.dmg** - Main installer for macOS arm64
+- **tarmacupd5016005** - Update package for automatic updates
 - **Telegram.arm64.app** - Application bundle
 
 ## Features Included
@@ -89,7 +89,7 @@ AyuGramDesktop/
 ├── Telegram/
 │   ├── build/
 │   │   ├── target          # Set to 'mac'
-│   │   ├── version         # Version 5.16.4
+│   │   ├── version         # Version 5.16.5
 │   │   └── build.sh        # Main build script with arm64 support
 │   └── configure.sh        # Build configuration script
 ├── build_macos_arm64.sh    # Build setup demonstration
@@ -97,4 +97,4 @@ AyuGramDesktop/
 └── README_BUILD.md         # This documentation
 ```
 
-The repository is now ready for macOS arm64 DMG compilation on a properly configured macOS development environment.
+The repository is now configured for AyuGram Desktop version 5.16.5 macOS arm64 DMG compilation.

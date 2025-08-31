@@ -1,3 +1,10 @@
+5.16.5 (12.07.25)
+
+- Include latest updates from dev-bleizx branch.
+- Improved stability and performance optimizations.
+- Enhanced AyuGram features integration.
+- Updated to latest Telegram API layer.
+
 5.16.4 (11.07.25)
 
 - Fix problem with negative unread counters.
