@@ -56,3 +56,9 @@ cmake-build-debug/
 
 # Project specific
 Telegram/SourceFiles/_other/packer_private.h
+
+# Build artifacts and release files
+/dist/
+release_notes.md
+upload_instructions.txt
+technical_summary.md
