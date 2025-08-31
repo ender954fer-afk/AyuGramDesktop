@@ -1,0 +1,122 @@
+name: Build and Release AyuGram DMG
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    if: runner.os == 'macOS'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up build environment
+      run: |
+        # Install required dependencies for macOS build
+        brew install git automake cmake wget pkg-config gnu-tar ninja nasm meson
+        
+    - name: Configure build
+      run: |
+        # Set up API credentials (would need to be configured as secrets)
+        # ./Telegram/configure.sh -D TDESKTOP_API_ID=${{ secrets.API_ID }} -D TDESKTOP_API_HASH=${{ secrets.API_HASH }} -D DESKTOP_APP_MAC_ARCH=arm64
+        echo "Build configuration would go here"
+        
+    - name: Build application
+      run: |
+        # cd out && cmake --build . --config Release --target Telegram
+        echo "Actual build would happen here on macOS runner"
+        
+    - name: Create DMG
+      run: |
+        chmod +x create_dmg_arm64.sh
+        ./create_dmg_arm64.sh
+        
+    - name: Prepare release
+      run: |
+        chmod +x prepare_release.sh
+        ./prepare_release.sh
+        
+    - name: Upload DMG artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ayugram-dmg
+        path: |
+          out/Release/deploy/*.dmg
+          out/Release/deploy/tarmacupd*
+          
+  create-release:
+    needs: [build-macos]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: ayugram-dmg
+        path: ./release-files
+        
+    - name: Prepare release
+      run: |
+        chmod +x prepare_release.sh
+        ./prepare_release.sh
+        
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: "AyuGram Desktop ${{ github.ref_name }} - Branch Merge Edition"
+        body_path: release_notes.md
+        files: |
+          release-files/*.dmg
+          release-files/tarmacupd*
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+  simulate-build:
+    runs-on: ubuntu-latest
+    if: runner.os != 'macOS' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Simulate DMG creation
+      run: |
+        chmod +x create_dmg_arm64.sh
+        ./create_dmg_arm64.sh
+        
+    - name: Prepare release materials
+      run: |
+        chmod +x prepare_release.sh
+        ./prepare_release.sh
+        
+    - name: Upload simulated artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ayugram-simulated
+        path: |
+          out/Release/deploy/*
+          release_notes.md
+          upload_instructions.txt
+          technical_summary.md
