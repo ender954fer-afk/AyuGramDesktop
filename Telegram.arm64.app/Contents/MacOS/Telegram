@@ -1,0 +1,20 @@
+#!/bin/bash
+# AyuGram Desktop 5.16.5 Launcher
+# This is a placeholder executable for the DMG creation demo
+
+echo "AyuGram Desktop 5.16.5"
+echo "This is a demonstration build for DMG creation."
+echo "In a real build, this would be the compiled AyuGram application."
+echo ""
+echo "Features included:"
+echo "- Ghost mode (flexible)"
+echo "- Messages history"
+echo "- Anti-recall functionality"
+echo "- Font customization"
+echo "- Local Telegram Premium"
+echo "- dev-bleizx integration"
+echo ""
+echo "To build the actual application, run this on macOS with proper development tools."
+
+# Keep the app running for demonstration
+read -p "Press Enter to close..."
